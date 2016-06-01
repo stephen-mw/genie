@@ -83,6 +83,9 @@ public class InitialSetupTask extends GenieBaseTask {
 
         /** set the env variables in the launcher script **/
 
+        // Set the hashbang for the interpreter (currently bash)
+        writer.write("#!/usr/bin/env bash\n");
+
         // set environment variable for the job directory
         writer.write(JobConstants.EXPORT
             + JobConstants.GENIE_JOB_DIR_ENV_VAR

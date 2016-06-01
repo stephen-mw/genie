@@ -53,7 +53,7 @@ public final class JobConstants {
     /**
      * The launcher script name that genie creates to setup a job for running.
      **/
-    public static final String GENIE_JOB_LAUNCHER_SCRIPT = "run.sh";
+    public static final String GENIE_JOB_LAUNCHER_SCRIPT = "run";
 
     /**
      * Delimiter to be used while creating file paths.
@@ -230,9 +230,11 @@ public final class JobConstants {
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     /**
-     * An object the encapsulates the kill handling logic to be added to the run.sh for each job.
+     * An object the encapsulates the kill handling logic to be added to the run script for each job.
      */
     public static final String JOB_KILL_HANDLER_LOGIC = new StringBuilder()
+        .append("#!/usr/bin/env bash\n")
+        .append("\n")
         .append("# Set function in case any of the exports or source commands cause an error\n")
         .append("trap \"handle_failure\" ERR\n")
         .append("function handle_failure {\n")

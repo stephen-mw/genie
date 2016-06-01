@@ -112,12 +112,15 @@ public class JobKickoffTask extends GenieBaseTask {
             command.add(this.jobExecEnv.getJobRequest().getUser());
         }
 
+        // Set the execute bit on the runs script. This allows the run script
+        // to be interpreted based on the hashbang.
+        setExecuteOnFile(runScript);
+
         // If the OS is linux use setsid to launch the process so that the entire process tree
         // is launched in process group id which is the same as the pid of the parent process
         if (SystemUtils.IS_OS_LINUX) {
             command.add("setsid");
         }
-        command.add("bash");
         command.add(runScript);
 
         // Cannot convert to executor because it does not provide an api to get process id.
@@ -259,4 +262,25 @@ public class JobKickoffTask extends GenieBaseTask {
             throw new GenieServerException(msg, e);
         }
     }
+
+    /**
+     * Method to set execute bit on a file.
+     *
+     * @param file Full path of file to set execute bit.
+     * @throws GenieException If there is a problem.
+     */
+    public void setExecuteOnFile(final String file) throws GenieException {
+
+        final CommandLine commandLine = new CommandLine("sudo");
+        commandLine.addArgument("chmod");
+        commandLine.addArgument("+x");
+        commandLine.addArgument(file);
+
+        try {
+            this.executor.execute(commandLine);
+        } catch (IOException ioexception) {
+            throw new GenieServerException("Could not set execute with exception " + ioexception);
+        }
+    }
+
 }
