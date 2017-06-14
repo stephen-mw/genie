@@ -1481,9 +1481,8 @@ class Genie(object):
             else:
                 yield None
 
-
-            # Break if we're at the end
-            if (resp['page']['totalPages']) == (resp['page']['number'] + 1):
+            # Break if we're at the end or there's no jobs
+            if (resp['page']['totalPages']) == (resp['page']['number'] + 1) or (resp['page']['totalPages'] == 0):
                 break
 
             # On to the next iteration
